@@ -1,0 +1,1 @@
+这个工程是对英文图书《OpenCV 3 Computer Vision Application Programming Cookbook, 3rd Edition》的翻译。
