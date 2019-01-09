@@ -1,48 +1,49 @@
-#include <iostream>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
+#include <vector>
+#include <opencv2/core.hpp>
+#include <opencv2/highgui.hpp>
+#include <opencv2/imgproc.hpp>
 
-void sharpen(const cv::Mat &image, cv::Mat &result)
-{
-    // allocate if necessary
+// remapping an image by creating wave effects
+void wave(const cv::Mat &image, cv::Mat &result) {
     result.create(image.size(), image.type());
-    int nchannels= image.channels(); // get number of channels
-    // for all rows (except first and last)
-    for (int j= 1; j<image.rows-1; j++)
+    // the map functions
+    cv::Mat srcX(image.rows,image.cols,CV_32F);
+    cv::Mat srcY(image.rows,image.cols,CV_32F);
+    // creating the mapping
+    for (int i=0; i<image.rows; i++)
     {
-        const uchar* previous= image.ptr<const uchar>(j-1);// previous row
-        const uchar* current= image.ptr<const uchar>(j); // current row
-        const uchar* next= image.ptr<const uchar>(j+1); // next row
-        uchar* output= result.ptr<uchar>(j); // output row
-        for (int i=nchannels; i<(image.cols-1)*nchannels; i++)
-        {
-            // apply sharpening operator
-            *output++= cv::saturate_cast<uchar>(5*current[i]-current[i-nchannels]-current[i+nchannels]-previous[i]-next[i]);
+        for (int j=0; j<image.cols; j++) {
+            // new location of pixel at (i,j)
+            srcX.at<float>(i,j)= j; // remain on same column
+            // pixels originally on row i are now
+            // moved following a sinusoid
+            srcY.at<float>(i,j)= i+5*sin(j/10.0);
         }
     }
-    // Set the unprocessed pixels to 0
-    result.row(0).setTo(cv::Scalar(0));
-    result.row(result.rows-1).setTo(cv::Scalar(0));
-    result.col(0).setTo(cv::Scalar(0));
-    result.col(result.cols-1).setTo(cv::Scalar(0));
+    // applying the mapping
+    cv::remap(image, // source image
+              result, // destination image
+              srcX, // x map
+              srcY, // y map
+              cv::INTER_LINEAR); // interpolation method
 }
 
 int main()
 {
-    // read the image
-    cv::Mat image = cv::imread("boldt.jpg");
-    cv::Mat result;
-    // time and process the image
-    const int64 start = cv::getTickCount();
-    sharpen(image, result);
-    //Elapsed time in seconds
-    double duration = (cv::getTickCount() - start) / cv::getTickFrequency();
+    cv::Mat image1, result;
 
-    // display the image
-    std::cout << "sharpen function Duration= " << duration << "secs" << std::endl;
+    // open images
+    image1= cv::imread("boldt.jpg");
+    if (image1.empty())
+    {
+        printf("image1 is empty\n");
+        return -1;
+    }
+    wave(image1, result);
+
     cv::namedWindow("Image");
-    cv::imshow("Image original", image);
-    cv::imshow("Image sharpen", result);
+    cv::imshow("Image",result);
+    cv::imwrite("boldt-wave.jpg", result);
 
     cv::waitKey();
 

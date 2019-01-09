@@ -61,6 +61,25 @@ int main()
 }
 ```
 
+Running this program to detect a blue sky in the colored version of the Castle image presented in the previous chapter produces the following output: 
+
+运行此程序以检测前一章中呈现的城堡图像的彩色版本中的蓝天，产生以下输出：
+
+![]()
+
+Here, a white pixel indicates a positive detection of the sought color, and black indicates negative.
+
+这里，白色像素表示所寻找颜色的正检测，黑色表示负。
+
+Obviously, the algorithm we encapsulated in this class is relatively simple (as we will see next, it is composed of just one scanning loop and one tolerance parameter). The Strategy design pattern becomes really powerful when the algorithm to be implemented is more complex, has many steps, and includes several parameters. 
+
+显然，我们封装在这个类中的算法相对简单（我们将在下面看到，它只由一个扫描循环和一个容差参数组成）。当要实现的算法更复杂，步骤多，并且包含多个参数时，策略设计模式变得非常强大。
+
+### How it works…
+The core process of this algorithm is easy to build. It is a simple scanning loop that goes over each pixel,comparing its color with the target color. Using what we learned in the Scanning an image with iterators recipe of the previous chapter, this loop can be written as follows: 
+
+该算法的核心过程易于构建。这是一个简单的扫描循环，遍历每个像素，将其颜色与目标颜色进行比较。使用我们在上一章的使用迭代器配方扫描图像中学到的知识，可以按如下方式编写此循环：
+
 
 
 ## 使用GrabCut算法分割图像
