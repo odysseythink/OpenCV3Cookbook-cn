@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.8.15"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>OpenCV3Cookbook-demo: CColorDetector类 参考</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">OpenCV3Cookbook-demo
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- 制作者 Doxygen 1.8.15 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+var searchBox = new SearchBox("searchBox", "search",false,'搜索');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
+$(function() {
+  initMenu('',true,false,'search.php','搜索');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public 成员函数</a> &#124;
+<a href="#pub-attribs">Public 属性</a> &#124;
+<a href="class_c_color_detector-members.html">所有成员列表</a>  </div>
+  <div class="headertitle">
+<div class="title">CColorDetector类 参考<span class="mlabels"><span class="mlabel">abstract</span></span><div class="ingroups"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r.html">COLORDETECTOR</a></div></div>  </div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="colordetector_8hh_source.html">colordetector.hh</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public 成员函数</h2></td></tr>
+<tr class="memitem:ga2c90bf22f5f6100ab999681549bc50a7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga2c90bf22f5f6100ab999681549bc50a7">CColorDetector</a> ()</td></tr>
+<tr class="separator:ga2c90bf22f5f6100ab999681549bc50a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gafc16ad942961ce455e07b571c2485760"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#gafc16ad942961ce455e07b571c2485760">CColorDetector</a> (bool useLab)</td></tr>
+<tr class="separator:gafc16ad942961ce455e07b571c2485760"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gaca91c1ac0a8f28df1b3fe842f874ab37"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#gaca91c1ac0a8f28df1b3fe842f874ab37">CColorDetector</a> (uchar blue, uchar green, uchar red, int mxDist=100, bool useLab=false)</td></tr>
+<tr class="separator:gaca91c1ac0a8f28df1b3fe842f874ab37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga9a73b674b1b8aafd28e4cb47191dd2fe"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga9a73b674b1b8aafd28e4cb47191dd2fe">getDistanceToTargetColor</a> (const cv::Vec3b &amp;color) const</td></tr>
+<tr class="separator:ga9a73b674b1b8aafd28e4cb47191dd2fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:gac410a5dbb4e0a36f1ec5ac70b261020d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#gac410a5dbb4e0a36f1ec5ac70b261020d">getColorDistance</a> (const cv::Vec3b &amp;color1, const cv::Vec3b &amp;color2) const</td></tr>
+<tr class="separator:gac410a5dbb4e0a36f1ec5ac70b261020d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga484229610d55aacd84f3658bfa36a10f"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga484229610d55aacd84f3658bfa36a10f">process</a> (const cv::Mat &amp;image)</td></tr>
+<tr class="separator:ga484229610d55aacd84f3658bfa36a10f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga29a943a2fb28e9ad7ac6758facb5d173"><td class="memItemLeft" align="right" valign="top">cv::Mat&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga29a943a2fb28e9ad7ac6758facb5d173">operator()</a> (const cv::Mat &amp;image)</td></tr>
+<tr class="separator:ga29a943a2fb28e9ad7ac6758facb5d173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ga2d67bb43e52cd705f73df73f21a53458"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga2d67bb43e52cd705f73df73f21a53458">setColorDistanceThreshold</a> (int distance)</td></tr>
+<tr class="separator:ga2d67bb43e52cd705f73df73f21a53458"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8aa66e4925e4ec90c023d94c0d600da1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_color_detector.html#a8aa66e4925e4ec90c023d94c0d600da1">if</a> (distance&lt; 0) distance=0</td></tr>
+<tr class="separator:a8aa66e4925e4ec90c023d94c0d600da1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
+Public 属性</h2></td></tr>
+<tr class="memitem:a698ec29b6fe10d3dc33fd5eb54544d84"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_c_color_detector.html#a698ec29b6fe10d3dc33fd5eb54544d84">maxDist</a> = distance</td></tr>
+<tr class="separator:a698ec29b6fe10d3dc33fd5eb54544d84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">成员函数说明</h2>
+<a id="a8aa66e4925e4ec90c023d94c0d600da1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8aa66e4925e4ec90c023d94c0d600da1">&#9670;&nbsp;</a></span>if()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">CColorDetector::if </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">类成员变量说明</h2>
+<a id="a698ec29b6fe10d3dc33fd5eb54544d84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a698ec29b6fe10d3dc33fd5eb54544d84">&#9670;&nbsp;</a></span>maxDist</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">CColorDetector::maxDist = distance</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>该类的文档由以下文件生成:<ul>
+<li>D:/Workplace/opencv_learn/OpenCV3Cookbook-cn/source/CH03/demo1/<a class="el" href="colordetector_8hh_source.html">colordetector.hh</a></li>
+<li>D:/Workplace/opencv_learn/OpenCV3Cookbook-cn/source/CH03/demo1/<a class="el" href="demo1_2colordetector_8cpp.html">colordetector.cpp</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+制作者 &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.15
+</small></address>
+</body>
+</html>
