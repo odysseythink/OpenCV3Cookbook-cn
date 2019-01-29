@@ -1,5 +1,0 @@
-var searchData=
-[
-  ['setcolordistancethreshold',['setColorDistanceThreshold',['../class_color_detector.html#a9ece6c2b92e2be9f0d00486574e64715',1,'ColorDetector::setColorDistanceThreshold()'],['../group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga2d67bb43e52cd705f73df73f21a53458',1,'CColorDetector::setColorDistanceThreshold()'],['../colordetector_8hh.html#a7686d39b8e88a8cae6e8afbc0670bf88',1,'setColorDistanceThreshold():&#160;colordetector.hh']]],
-  ['settargetcolor',['setTargetColor',['../class_color_detector.html#a71b3282c0a403500f0d13aada35b37a9',1,'ColorDetector::setTargetColor(uchar blue, uchar green, uchar red)'],['../class_color_detector.html#a02985dffdf818a59fe3f6e0dbf01a95f',1,'ColorDetector::setTargetColor(cv::Vec3b color)'],['../group___c_o_l_o_r_d_e_t_e_c_t_o_r___c_l_a_s_s___functions.html#ga0a234d3700545b44bfb84259aa44b4a7',1,'SetTargetColor(uchar blue, uchar green, uchar red):&#160;colordetector.cpp'],['../group___c_o_l_o_r_d_e_t_e_c_t_o_r.html#ga6ac751328e744c20ba804fa59740c469',1,'setTargetColor(cv::Vec3b color):&#160;colordetector.hh']]]
-];

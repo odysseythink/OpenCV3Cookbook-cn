@@ -22,7 +22,6 @@ int main()
     cv::namedWindow("result");
     cv::Mat result = cdetect.Process(image);
     cv::imshow("result",result);
-//    cv::imwrite("CH3-image1.jpg", result);
     cv::waitKey();
     return 0;
 }
