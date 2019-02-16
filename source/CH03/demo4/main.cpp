@@ -3,6 +3,7 @@
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 
+using namespace cv;
 
 int main()
 {    
@@ -17,6 +18,11 @@ int main()
     // Display the image
     cv::namedWindow("Original Image");
     cv::imshow("Original Image",image);
+
+    cv::Mat grayImage;
+    grayImage.create(image.size(),CV_8U);
+    cv::cvtColor(image, grayImage, CV_BGR2GRAY);
+    cv::imshow("gray Image",grayImage);
 
     // define bounding rectangle
     cv::Rect rectangle(216,8,487,566);

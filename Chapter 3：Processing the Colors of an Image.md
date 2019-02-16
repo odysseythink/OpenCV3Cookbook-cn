@@ -1,11 +1,11 @@
-# 第三章 处理图像的颜色
+# <div id="ch3">第三章 处理图像的颜色</div>
 
 In this chapter, we will cover the following recipes:
 
-- Comparing colors using the Strategy design pattern使用策略设计模式比较颜色
-- Segmenting an image with the GrabCut algorithm使用GrabCut算法分割图像
-- Converting color representations转换颜色表示
-- Representing colors with hue, saturation, and brightness 用色调，饱和度和亮度表示颜色
+- [Comparing colors using the Strategy design pattern使用策略设计模式比较颜色](#ch3_sdp)
+- [Segmenting an image with the GrabCut algorithm使用GrabCut算法分割图像](#ch3_grabcut)
+- [Converting color representations转换颜色表示](#ch3_ccr)
+- [Representing colors with hue, saturation, and brightness 用色调，饱和度和亮度表示颜色](#ch3_hsb)
 
 ## 简介
 
@@ -19,7 +19,7 @@ n.  音阶, 整个范围, 全部, 音域) of different colors. In fact, this cho
 
 在数字成像中，通常使用红色，绿色和蓝色这几种原色组合再现颜色。选择这些颜色是因为当它们组合在一起时，它们可以产生不同颜色的宽色域。实际上，这种原色的选择很好地模拟了人类视觉系统的三色颜色感知，因为不同的锥形细胞具有位于红色，绿色和蓝色光谱周围的灵敏度。在本章中，您将使用像素颜色，并查看如何根据颜色信息分割图像。此外，您将了解在执行彩色图像处理时使用不同的颜色表示有时会很有用。
 
-## 使用策略设计模式比较颜色
+## <div id="ch3_sdp">使用策略设计模式比较颜色</div>
 
 Let's say we want to build a simple algorithm that will identify all of the pixels in an image that have a given color. For this, the algorithm has to accept an image and a color as input and will return a binary image showing the pixels that have the specified color. The tolerance with which we want to accept a color will be another parameter to be specified before running the algorithm. 
 
@@ -372,7 +372,7 @@ Once created, the algorithm can then be used. For example, the generic methods `
 - The policy-based class design, introduced by A. Alexandrescu, is an interesting variant of the Strategy design pattern in which algorithms are selected at compile time.由A. Alexandrescu引入的基于策略的类设计是策略设计模式的一个有趣变体，其中在编译时选择算法。
 - The Converting color representation recipe introduces the concept of perceptually uniform color spaces to achieve more intuitive color comparison.转换颜色表示配方引入了感知统一颜色空间的概念，以实现更直观的颜色比较。
 
-## 使用GrabCut算法分割图像
+## <div id="ch3_grabcut">使用GrabCut算法分割图像</div>
 
 The previous recipe showed how color information can be useful to segment an image into area corresponding to specific elements of a scene. Objects often have distinctive colors, and these ones can often be extracted by identifying areas of similar colors. OpenCV proposes an implementation of a popular algorithm for image segmentation: the **GrabCut** algorithm. GrabCut is a complex and computationally expensive algorithm, but it generally produces very accurate results. It is the best algorithm to use when you want to extract a foreground object in a still image (for example, to cut and paste an object from one picture to another) 
 
@@ -468,7 +468,321 @@ This is done through an optimization process that tries to connect pixels with s
 
 这是通过尝试连接具有相似标签的像素的优化过程来完成的，并且这对于在相对均匀强度的区域中放置边界施加了惩罚。使用Graph Cuts算法可以有效地解决该优化问题，该算法可以通过将其表示为应用了切割的连接图来找到问题的最优解，以便构成最优配置。获得的分割为像素生成新标签。
 
+The clustering process can then be repeated, and a new optimal segmentation is found again, and so on. Therefore, the GrabCut algorithm is an iterative procedure that gradually improves the segmentation result.  Depending on the complexity of the scene, a good solution can be found in more or less number of iterations (in easy cases, one iteration would be enough). 
+
+然后可以重复聚类过程，并再次找到新的最佳分割，等等。 因此，GrabCut算法是一种逐步改进分割结果的迭代过程。 根据场景的复杂程度，可以在或多或少的迭代次数中找到一个好的解决方案（在简单的情况下，一次迭代就足够了）。
+
+This explains the argument of the function where the user can specify the number of iterations to be applied. The two internal models maintained by the algorithm are passed as an argument of the function (and returned). Therefore, it is possible to call the function with the models of the last run again if one wishes to improve the segmentation result by performing additional iterations. 
+
+这解释了函数的参数，其中用户可以指定要应用的迭代次数。 算法维护的两个内部模型作为函数的参数传递（并返回）。 因此，如果希望通过执行额外的迭代来改进分割结果，则可以再次使用上次运行的模型调用该函数。
+
+### See also
+- The article *GrabCut: Interactive Foreground Extraction using Iterated Graph Cuts in ACM Transactions on Graphics (SIGGRAPH) volume 23, issue 3, August 2004, C.  Rother, V. Kolmogorov, and A. Blake* describes the GrabCut algorithm in detail
+- The *Segmenting images using watersheds* recipe in **Chapter 5, Transforming Images with Morphological Operations**, presents another image segmentation algorithm 
+
+## <div id="ch3_ccr">转换颜色表示</div>
+
+The RGB color space is based on the use of the red, green, and blue additive primary colors. We saw in the first recipe of this chapter that these primaries have been chosen because they can produce a good range of colors well aligned with the human visual system. It is often the default color space in digital imagery because this is the way color images are acquired, that is, through the use of red, green, and blue filters. Additionally, the red, green, and blue channels are normalized such that when combined in equal amounts, a gray-level intensity is obtained, that is, from black (0,0,0) to white (255,255,255). 
+
+RGB颜色空间基于红色，绿色和蓝色添加剂原色的使用。 我们在本章的第一个章节中看到，选择这些原色是因为它们可以产生与人类视觉系统完全一致的各种颜色。 它通常是数字图像中的默认颜色空间，因为这是获取彩色图像的方式，即通过使用红色，绿色和蓝色滤镜。 另外，红色，绿色和蓝色通道被归一化，使得当以相等的量组合时，获得灰度级强度，即，从黑色（0,0,0）到白色（255,255,255）。
+
+Unfortunately, computing the distance between the colors using the RGB color space is not the best way to measure the similarity between two given colors. Indeed, RGB is not a perceptually uniform color space. This means that two colors at a given distance might look very similar, while two other colors separated by the same distance might look very different. 
+
+不幸的是，使用RGB颜色空间计算颜色之间的距离并不是测量两种给定颜色之间相似性的最佳方法。 实际上，RGB不是感知上均匀的色彩空间。 这意味着给定距离处的两种颜色可能看起来非常相似，而以相同距离分隔的另外两种颜色可能看起来非常不同。
+
+To solve this problem, other color representations that have the property of being perceptually uniform have been introduced. In particular, the $\text{CIE} \space L^{*}a^{*}b^{*}​$ is one such color model. By converting our images to this representation, the Euclidean distance between an image pixel and the target color will then be a meaningful measure of the visual similarity between the two colors. In this recipe, we will show you how to convert colors from one representation to another in order to work with other color spaces. 
+
+为了解决这个问题，已经引入了具有感知统一特性的其他颜色表示。 特别是，$\text{CIE} \space L^{*}a^{*}b^{*}​$就是这样一种颜色模型。 通过将我们的图像转换为该表示，图像像素和目标颜色之间的欧几里德距离将是两种颜色之间的视觉相似性的有意义的度量。 在本文中，我们将向您展示如何将颜色从一种表示转换为另一种表示，以便与其他颜色空间一起使用。
+
+### <div id="ch3_ccr_howtodoit">How to do it… </div>
+
+Conversion of images between different color spaces is easily done through the use of the `cv::cvtColor` OpenCV function. Let's revisit the `ColorDetector` class of the first recipe of this chapter, `Comparing colors using the Strategy design pattern`. We now convert the input image to the $\text{CIE} \space L^{*}a^{*}b^{*}​$ color space at the beginning of the process method: 
+
+通过使用`cv::cvtColor` OpenCV函数可以轻松地在不同颜色空间之间转换图像。 让我们重温一下本章第一篇文章的`ColorDetector`类，`使用策略设计模式比较颜色`。 我们现在将输入图像转换为处理方法开头的$ \text{CIE} \space L^{*} a^{*} b^{*} ​$颜色空间：
+
+```c++
+cv::Mat ColorDetector::process(const cv::Mat &image) {
+    // re-allocate binary map if necessary
+    // same size as input image, but 1-channel
+    result.create(image.rows,image.cols,CV_8U);
+    // Converting to Lab color space
+    cv::cvtColor(image, converted, CV_BGR2Lab);
+    // get the iterators of the converted image
+    cv::Mat_<cv::Vec3b>::iterator it= converted.begin<cv::Vec3b>();
+    cv::Mat_<cv::Vec3b>::iterator itend= converted.end<cv::Vec3b>();
+    // get the iterator of the output image
+    cv::Mat_<uchar>::iterator itout= result.begin<uchar>();
+    // for each pixel
+    for ( ; it!= itend; ++it, ++itout) {
+```
+
+The converted variable contains the image after color conversion. In the ColorDetector class, it is defined as a class attribute: 
+
+变量`converted`包含颜色转换后的图像。 在ColorDetector类中，它被定义为类属性：
+
+```c++
+class ColorDetector {
+private:
+    // image containing color converted image
+    cv::Mat converted;
+```
+
+You also need to convert the input target color. You can do this by creating a temporary image that contains only one pixel. Note that you need to keep the same signature as in the earlier recipes, that is, the user continues to supply the target color in RGB: 
+
+您还需要转换输入目标颜色。 您可以通过创建仅包含一个像素的临时图像来完成此操作。 请注意，您需要保留与前面内容中相同的签名，即用户继续以RGB格式提供目标颜色：
+
+```	c++
+// Sets the color to be detected
+void setTargetColor(unsigned char red, unsigned char green, unsigned char blue) {
+    // Temporary 1-pixel image
+    cv::Mat tmp(1,1,CV_8UC3);
+    tmp.at<cv::Vec3b>(0,0)= cv::Vec3b(blue, green, red);
+    // Converting the target to Lab color space
+    cv::cvtColor(tmp, tmp, CV_BGR2Lab);
+    target= tmp.at<cv::Vec3b>(0,0);
+}
+```
+
+If the application of the preceding([pre'ced·ing || prɪ'sɪːdɪŋ]adj.  在前的, 在先的;  前面的) recipe is compiled with this modified class, it will now detect the pixels of the target color using the $ \text{CIE} \space L^{*} a^{*} b^{*} $ color model. 
+
+如果使用此修改后的类编译前面章节的应用程序，它现在将使用$ \text{CIE}  \space L^{*} a^{*} b^{*} $来检测目标颜色的像素的颜色模型。
+
+### <div id="ch3_ccr_howitworks">How it works…</div>
+When an image is converted from one color space to another, a linear or nonlinear transformation is applied on each input pixel to produce the output pixels. The pixel type of the output image will match the one of the input image. Even if you work with 8-bit pixels most of the time, you can also use a color conversion with floating-point images (in which case, the pixel values are generally assumed to vary between 0 and 1.0) or with integer images (with pixels generally varying between 0 and 65535). However, the exact domain of the pixel values depends on the specific color space and destination image type. For example, with the $ \text{CIE}  \space L^{*} a^{*} b^{*} ​$ color space, the L channel, which represents the brightness of each pixel, varies between 0 and 100, and it is rescaled between 0 and 255 in the case of the 8-bit images. 
+
+当图像从一个颜色空间转换为另一个颜色空间时，在每个输入像素上应用线性或非线性变换以产生输出像素。 输出图像的像素类型将与输入图像的像素类型匹配。 即使您在大多数时间使用8位像素，也可以使用浮点图像的颜色转换（在这种情况下，通常假设像素值在0到1.0之间变化）或整数图像（使用 像素通常在0到65535之间变化）。 但是，像素值的确切域取决于特定的颜色空间和目标图像类型。 例如，对于$ \text{CIE}  \space L^{*} a^{*} b^{*} ​$颜色空间，表示每个像素的亮度的L通道在0到100之间变化，并且在8位图像的情况下重新调整在0到255之间。
+
+The a and b channels correspond to the chromaticity([ˌkrəuməˈtisiti]色度; 染色性) components. These channels contain information about the color of a pixel, independent of its brightness. Their values vary between -127 and 127; for 8-bit images, 128 is added to each value in order to make it fit within the 0 to 255 interval. However, note that the 8-bit color conversion will introduce rounding([round·ing || 'raʊndɪŋ]n.制圆; 凑整;  舍入) errors that will make the transformation imperfectly([im'pә:fiktli]ad.   不完全地, 有缺点地, 不完备地) reversible([re'vers·i·ble || rɪ'vɜrsəbl /-'vɜːsəbl]adj.  可反转的; 可掉换的; 可逆的;  可废弃的). 
+
+a和b通道对应于色度分量。 这些通道包含有关像素颜色的信息，与其亮度无关。 它们的值在-127到127之间变化; 对于8位图像，将128添加到每个值，以使其适合0到255的间隔。 但是，请注意，8位颜色转换将引入舍入误差，这将使转换不完全可逆。
+
+Most commonly used color spaces are available. It is just a question of providing the right color space conversion code to the OpenCV function (for CIE L*a*b*, this code is CV_BGR2Lab). Among these is YCrCb, which is the color space used in JPEG compression. To convert a color space from BGR to YCrCb, the code will be CV_BGR2YCrCb. Note that all the conversions that involve the three regular primary colors, red, green, and blue, are available in the RGB and BGR order. 
+
+最常用的色彩空间是可用的。 这只是向OpenCV函数提供正确的颜色空间转换代码的问题（对于$ \text{CIE}  \space L^{*} a^{*} b^{*} ​$，此代码为`CV_BGR2Lab`）。 其中有YCrCb，它是JPEG压缩中使用的色彩空间。 要将颜色空间从BGR转换为YCrCb，代码将为`CV_BGR2YCrCb`。 请注意，所有涉及三种常规原色（红色，绿色和蓝色）的转换都以RGB和BGR顺序提供。
+
+The $ \text{CIE}  \space L^{*} u^{*} v^{*} ​$ color space is another perceptually uniform color space. You can convert from BGR to  $\text{CIE}  \space L^{*} u^{*} v^{*} ​$by using the `CV_BGR2Luv` code. Both $ L^{*} a^{*} b^{*} ​$ and $ L^{*} u^{*} v^{*} ​$ use the same conversion formula for the brightness channel but use a different representation for the chromaticity channels. Also, note that since these two color spaces distort( [dis·tort || dɪ'stɔːt]v.  弄歪; 歪曲;  扭曲) the RGB color domain in order to make it perceptually(**perception**   [per·cep·tion || pər'sepʃn /pə'-]n.  知觉, 领悟力,  感觉) uniform([u·ni·form || 'juːnɪfɔrm /-fɔːm]n.  制服adj.  统一的, 始终如一的,  一律的), these transformations are nonlinear (therefore, they are costly to compute). 
+
+$ \text{CIE}  \space L^{*} u^{*} v^{*} ​$颜色空间是另一个感知上均匀的颜色空间。 您可以使用CV_BGR2Luv代码从BGR转换为$\text{CIE}  \space L^{*} u^{*} v^{*} ​$。 $ L^{*} a^{*} b^{*} ​$和$ L^{*} u^{*} v^{*} ​$都使用相同的亮度通道转换公式，但对色度通道使用不同的表示。 另外，请注意，由于这两个颜色空间会扭曲RGB颜色域以使其在感知上均匀，因此这些变换是非线性的（因此，它们的计算成本很高）。
+
+There is also the CIE XYZ color space (with the CV_BGR2XYZ code). It is a standard color space used to represent any perceptible color in a device-independent way. In the computation of the $L^{*}u^{*}v^{*}$ and  $L^{*}a^{*}b^{*}$ color spaces, the XYZ color space is used as an intermediate representation. The transformation between RGB and XYZ is linear. It is also interesting to note that the Y channel corresponds to a gray-level version of the image. 
+
+还有CIE XYZ颜色空间（CV_BGR2XYZ代码）。 它是一种标准颜色空间，用于以与设备无关的方式表示任何可感知的颜色。 在$L^{*}u^{*}v^{*}$和$L^{*}a^{*}b^{*}$颜色空间的计算中，XYZ颜色空间用作中间表示。 RGB和XYZ之间的转换是线性的。 值得注意的是，Y通道对应于图像的灰度版本。
+
+HSV and HLS are interesting color spaces because they decompose([de·com·pose || ‚diːkəm'pəʊz]v.  分解; 使腐烂; 被分解;  腐烂) the colors into their hue([hjuː]n.  色调; 颜色;  样子) and saturation([sat·u·ra·tion || ‚sætʃə'reɪʃn]n.  饱和; 浸透; 浸润, 全部充满;  色彩的纯净, 颜色可以和白色混合的程度) components plus the value or luminance([ˈljuːminəns]亮度; 发光度) component, which is a more natural way for humans to describe colors. The next recipe will present this color space. 
+
+HSV和HLS是有趣的色彩空间，因为它们将色彩分解为色调和饱和度分量加上值或亮度分量，这是人类描述色彩的更自然的方式。 下一章将呈现此色彩空间。
+
+You can also convert color images to gray-level intensities. The output will be a one-channel image: 
+
+您还可以将彩色图像转换为灰度级强度。 输出将是单通道图像：
+
+```c++
+cv::cvtColor(color, gray, CV_BGR2GRAY);
+```
+
+It is also possible to do the conversion in the other direction, but the three channels of the resulting color image will then be identically filled with the corresponding values in the gray-level image.
+
+也可以在另一个方向上进行转换，但是所得到的彩色图像的三个通道将用灰度图像中的相应值相同地填充。
+
+### <div id="ch3_ccr_seealso">See also</div>
+- The [Using the mean shift algorithm to find an object]() recipe in [Chapter 4, Counting the Pixels with Histograms](#ch4), uses the HSV color space in order to find an object in an image.
+- Many good references are available on the color space theory. Among them, the following is a complete  reference: [The Structure and Properties of Color Spaces and the Representation of Color Images, E.Dubois, Morgan and Claypool Publishers, 2009](). 
 
 
-## 转换颜色表示
-## 用色调，饱和度和亮度表示颜色
+
+## <div id="ch3_hsb">用色调，饱和度和亮度表示颜色</div>
+
+In this chapter, we played with image colors. We used different color spaces and tried to identify image areas of uniform color. The RGB color space was initially considered, and although it is an effective representation for the capture and display of colors in electronic imaging systems, this representation is not very intuitive. Indeed, this is not the way humans think about colors; they most often describe colors in terms of their tint, brightness, or colorfulness (that is, whether it is a vivid or pastel color). A color space based on the concept of hue, saturation, and brightness has then been introduced to help users to specify the colors using properties that are more intuitive to them. In this recipe, we will explore the concepts of hue, saturation, and brightness as a means to describe colors. 
+
+在本章中，我们和图像颜色打交道。 我们使用不同的颜色空间并尝试识别均匀颜色的图像区域。 最初考虑RGB颜色空间，尽管它是电子成像系统中颜色的捕获和显示的有效表示，但这种表示不是非常直观。 实际上，这不是人类对颜色的看法; 他们通常根据色彩，亮度或色彩来描述颜色（即，它是生动的还是柔和的颜色）。 然后引入了基于色调，饱和度和亮度概念的色彩空间，以帮助用户使用更直观的属性来指定颜色。 在这个配方中，我们将探索色调，饱和度和亮度的概念作为描述颜色的方法。
+
+### <div id="ch3_hsb_howtodoit">How to do it…</div>
+The conversion of a BGR image into another color space is done using the cv::cvtColor function that was explored in the previous recipe. Here, we will use the CV_BGR2HSV conversion code: 
+
+使用在前一节中探索过的`cv::cvtColor`函数将BGR图像转换为另一个颜色空间。 在这里，我们将使用 CV_BGR2HSV转换代码：
+
+```c++
+// convert into HSV space
+cv::Mat hsv;
+cv::cvtColor(image, hsv, CV_BGR2HSV);
+```
+
+We can go back to the BGR space using the CV_HSV2BGR code. We can visualize each of the HSV components by splitting the converted image channels into three independent images, as follows: 
+
+我们可以使用CV_HSV2BGR代码返回BGR空间。 我们可以通过将转换后的图像通道分成三个独立的图像来可视化每个HSV组件，如下所示：
+
+```c++
+// split the 3 channels into 3 images
+std::vector<cv::Mat> channels;
+cv::split(hsv,channels);
+// channels[0] is the Hue
+// channels[1] is the Saturation
+// channels[2] is the Value
+```
+
+Note that the third channel is the value of the color, that is, an approximate([əˈprɔksimeit]近似; 近似的; 逼近) measure of the brightness of the color. Since we are working on 8-bit images, OpenCV rescales the channel values to cover the 0 to 255 range (except for the hue, which is rescaled between 0 and 0180 as it will be explained in the next section). This is very convenient as we are able to display these channels as gray-level images. 
+
+请注意，第三个通道是颜色的值，即颜色亮度的近似度量。 由于我们正在处理8位图像，OpenCV会重新调整通道值以覆盖0到255范围（色调除外，它将在0和0180之间重新调整，如下一节中所述）。 这非常方便，因为我们能够将这些通道显示为灰度图像。
+
+城堡图像的Hue通道（左）、Saturation通道（中）和Value通道（右）的图像如下将如下所示：
+
+![](.\CH3-image5.jpg)
+
+### <div id="ch3_hsb_howitworks">How it works…</div>
+The hue/saturation/value color space has been introduced because this representation corresponds to the way humans tend to naturally organize colors. Indeed, humans prefer to describe colors with intuitive( [in·tu·i·tive || ɪn'tuːɪtɪv /-'tju-]adj.  直觉的) attributes such as tint([tɪnt]n.  色彩, 浅色;v.  给...着色; 使受影响;  染), colorfulness, and brightness. These three attributes are the basis of most phenomenal( [phe·nom·e·nal || fɪ'nɑmɪnl /-'nɒ-]adj.  现象的, 异常的,  能知觉的) color spaces. Hue designates( ['dezigneit]vt.   指定, 指明, 称呼a.   已选出而未上任的) the dominant color; the names that we give to colors (such as green, yellow, blue, and red) correspond to the different hue values. Saturation tells us how vivid(['vivid]a.   生动的, 鲜明的, 鲜艳的, 活泼的, 逼真的, 清晰的) the color is; pastel colors have low saturation, while the colors of the rainbow are highly saturated. Finally, brightness is a subjective attribute that refers to the luminosity of a color. Other phenomenal color spaces use the concept of color value or color lightness as a way to characterize the relative color intensity. 
+
+引入了色调/饱和度/值颜色空间是因为该表示对应于人们自然地组织颜色的倾向。 实际上，人们更喜欢用直观的属性来描述颜色，例如色调，色彩和亮度。 这三个属性是大多数感知色彩空间的基础。 Hue表示主色; 我们给颜色的名称（例如绿色，黄色，蓝色和红色）对应于不同的色调值。 饱和度告诉我们颜色是多么生动; 柔和的颜色具有低饱和度，而彩虹的颜色高度饱和。 最后，亮度是一种主观属性，指的是颜色的亮度。 其他现象色彩空间使用色值或色彩亮度的概念作为表征相对色彩强度的方式。
+
+These color components try to mimic(['mimik]a.   模仿的, 摹拟的n.   效颦者, 模仿者, 小丑, 仿制品vt.   模仿, 摹拟) the intuitive( [in'tju:itiv]a.   直觉的) human perception([pә'sepʃәn]n.   知觉, 感觉, 领悟力, 获取) of colors. In consequence, there is no standard definition for them. In the literature, you will find several different definitions and formulae of the hue, saturation, and brightness. OpenCV proposes two implementations of phenomenal color spaces: the HSV and the HLS color spaces. The conversion formulas are slightly different, but they give very similar results. 
+
+这些颜色成分试图模仿人类对颜色的直观感知。 因此，它们没有标准定义。 在文献中，您将找到几种不同的色调，饱和度和亮度的定义和公式。 OpenCV提出了两种现象色彩空间的实现：HSV和HLS色彩空间。 转换公式略有不同，但它们给出了非常相似的结果。
+
+The value component is probably the easiest to interpret. In the OpenCV implementation of the HSV space, it is defined as the maximum value of the three BGR components. It is a very simplistic implementation of the brightness concept. For a definition of brightness that matches the human visual system better, you should use the L channel of the perceptually uniform $L^{*}a^{*}b^{*}​$ and $L^{*}u^{*}v^{*}​$ color spaces. For example, the L channel takes into account the fact that a green color appears to human brighter than, for instance, a blue color of same intensity. 
+
+值组件可能是最容易解释的。 在HSV空间的OpenCV实现中，它被定义为三个BGR组件的最大值。 这是一个非常简单的亮度概念实现。 对于更好地匹配人类视觉系统的亮度定义，您应该使用感知上均匀的$L^{*}a^{*}b^{*}$和 $L^{*}u^{*}v^{*}$颜色空间的L通道。 例如，L通道考虑到绿色对人类更亮的事实，例如，相同强度的蓝色。
+
+To compute the saturation, OpenCV uses a formula based on the minimum and maximum values of the BGR components: 
+
+为了计算饱和度，OpenCV使用基于BGR组件的最小值和最大值的公式：
+$$
+\text{S} = \frac{max(R,G,B) - min(R,G,B)}{max(R,G,B)}
+$$
+The idea is that a grayscale color in which the three R, G, and B components are all equal will correspond to a perfectly desaturated color; therefore, it will have a saturation value of 0. Saturation is a value between 0 and 1.0. For 8-bit images, saturation is rescaled to a value between 0 and 255, and when displayed as a gray-level image, brighter areas correspond to the colors that have a higher saturation color. 
+
+这个想法是三个R，G和B都相等的灰度颜色将对应于完全去饱和的颜色; 因此，它的饱和度值为0。饱和度是介于0和1.0之间的值。 对于8位图像，饱和度重新调整为0到255之间的值，当显示为灰度图像时，较亮区域对应于具有较高饱和度颜色的颜色。
+
+For example, from the saturation image in the previous section, it can be seen that the blue of the water is more saturated than the light blue pastel color of the sky, as expected. The different shades of gray have, by definition, a saturation value equal to zero (because, in this case, all three BGR components are equal). This can be observed on the different roofs of the castle, which are made of a dark gray stone. Finally, in the  saturation image, you may have noticed some white spots located in areas that correspond to very dark regions of the original image. These are a consequence of the used definition for saturation. Indeed, because saturation measures only the relative difference between the maximum and minimum BGR values, a triplet such as (1,0,0) gives a perfect saturation of 1.0, even if this color would be seen as black. Consequently, the saturation values measured in dark regions are unreliable and should not be considered. 
+
+例如，从前一部分的饱和度图像可以看出，水的蓝色比天空的淡蓝色柔和色更饱和，如预期的那样。 根据定义，不同的灰色阴影具有等于零的饱和度值（因为，在这种情况下，所有三个BGR分量都相等）。 这可以在城堡的不同屋顶上观察到，这些屋顶由深灰色的石头制成。 最后，在饱和度图像中，您可能已经注意到位于对应于原始图像的非常暗区域的区域中的一些白点。 这些是使用饱和度定义的结果。 实际上，因为饱和度仅测量最大和最小BGR值之间的相对差异，所以诸如（1,0,0）的三元组给出1.0的完美饱和度，即使该颜色将被视为黑色。 因此，在暗区域中测量的饱和度值是不可靠的，不应该考虑。
+
+The hue of a color is generally represented by an angle value between 0 and 360, with the red color at 0 degrees. In the case of an 8-bit image, OpenCV divides this angle by two to fit within the 1-byte range. Therefore, each hue value corresponds to a given color tint independent of its brightness and saturation. For example, both the sky and the water have the same hue value, approximately 200 degrees (intensity,  100), which corresponds to the blue shade; the green color of the trees in the background has a hue of around 90 degrees. It is important to note that hue is less reliable when evaluated for colors that have a very low saturation. 
+
+颜色的色调通常由0到360之间的角度值表示，红色在0度。 在8位图像的情况下，OpenCV将该角度除以2以适合1字节范围。 因此，每个色调值对应于与其亮度和饱和度无关的给定色彩色调。 例如，天空和水都具有相同的色调值，大约200度（强度，100），其对应于蓝色; 背景中树木的绿色有90度左右的色调。 值得注意的是，在评估饱和度非常低的颜色时，色调不太可靠。	
+
+The HSB color space is often represented by a cone( [kəʊn]n.  圆锥体, 球果v.  使成锥形), where each point inside corresponds to a particular color. The angular(['æŋgjulә]a.   有角的, 消瘦的, 有尖角的, 生硬的) position corresponds to the hue of the color, the saturation is the distance from the central axis, and the brightness is given by the height. The tip of the cone corresponds to the black color for which the hue and saturation are undefined: 
+
+HSB颜色空间通常由圆锥表示，其中每个内部点对应于特定颜色。 角度位置对应于颜色的色调，饱和度是距中心轴的距离，亮度由高度给出。 锥形尖端对应于未定义色调和饱和度的黑色：
+
+<div id="CH3-image6">
+    <div align="center">
+		<img src=".\CH3-image6.jpg" >
+    </div>
+</div>
+
+We can also generate an artificial image that will illustrate the different hue/saturation combinations. 
+
+我们还可以生成一个人工图像，用于说明不同的色调/饱和度组合。
+
+```c++
+cv::Mat hs(128, 360, CV_8UC3);
+for (int h = 0; h < 360; h++) {
+    for (int s = 0; s < 128; s++) {
+        hs.at<cv::Vec3b>(s, h)[0] = h/2; // all hue angles
+        // from high saturation to low
+        hs.at<cv::Vec3b>(s, h)[1] = 255-s*2;
+        hs.at<cv::Vec3b>(s, h)[2] = 255; // constant value
+    }
+}
+```
+
+The columns of the following screenshot show the different possible hues (from 0 to 180), while the different lines illustrate the effect of saturation; the top part of the image shows fully saturated colors while the bottom part corresponds to unsaturated colors. A brightness value of 255 has been attributed to all the displayed colors: 
+
+以下屏幕截图的列显示了不同的可能色调（从0到180），而不同的线条说明了饱和度的影响; 图像的顶部显示完全饱和的颜色，而底部对应于不饱和的颜色。 亮度值255归因于所有显示的颜色：
+
+<div id="CH3-image7">
+    <div align="center">
+		<img src=".\CH3-image7.jpg" >
+    </div>
+</div>
+
+
+
+Interesting effects can be created by playing with the HSV values. Several color effects that can be created using photo editing software are accomplished from this color space. For example, you may decide to modify an image by assigning a constant brightness to all the pixels of an image without changing the hue and saturation. This can be done as follows: 
+
+通过使用HSV值可以创建有趣的效果。 可以使用照片编辑软件创建的几种颜色效果可以从这个颜色空间中完成。 例如，您可以决定通过为图像的所有像素分配恒定亮度而不改变色调和饱和度来修改图像。 这可以按如下方式完成：
+
+```c++
+// convert into HSV space
+cv::Mat hsv;
+cv::cvtColor(image, hsv, CV_BGR2HSV);
+// split the 3 channels into 3 images
+std::vector<cv::Mat> channels;
+cv::split(hsv,channels);
+// Value channel will be 255 for all pixels
+channels[2]= 255;
+// merge back the channels
+cv::merge(channels,hsv);
+// reconvert to BGR
+cv::Mat newImage;
+cv::cvtColor(hsv,newImage,CV_HSV2BGR);
+```
+
+This gives the following image, which now looks like a drawing. 
+
+这给出了下面的图像，现在看起来像一幅图。
+
+<div id="CH3-image8">
+    <div align="center">
+		<img src=".\CH3-image8.jpg" >
+    </div>
+</div>
+
+### <div id="ch3_hsb_more">There's more…</div>
+The HSV color space can also be very convenient to use when you want to look for objects of specific colors. 
+
+当您想要查找特定颜色的对象时，HSV颜色空间也可以非常方便地使用。
+
+## <div id="ch3_ucfd">使用颜色进行检测 - 肤色检测</div>
+
+Color information can be very useful for the initial detection of specific objects. For example, the detection of road signs in a driver-assistance application could rely on the colors of standard signs in order to quickly identify potential road sign candidates. The detection of skin color is another example in which the detected skin regions could be used as an indicator of the presence of a human in an image; this approach is very often used in gesture recognition where skin tone detection is used to detect hand positions. 
+
+颜色信息对于特定对象的初始检测非常有用。 例如，驾驶员辅助应用中的道路标志的检测可以依赖于标准标志的颜色，以便快速识别潜在的道路标志候选者。 皮肤颜色的检测是另一个例子，其中检测到的皮肤区域可以用作图像中人的存在的指示; 这种方法经常用于手势识别，其中肤色检测用于检测手部位置。
+
+In general, to detect an object using color, you first need to collect a large database of image samples that contain the object captured from different viewing conditions. These will be used to define the parameters of your classifier. You also need to select the color representation that you will use for classification. For skin tone detection, many studies have shown that skin color from the diverse ethnical groups clusters well in the hue/saturation space. For this reason, we will simply use the hue and saturation values to identify the  skin tones in the following image: 
+
+通常，要使用颜色检测对象，首先需要收集包含从不同查看条件捕获的对象的大型图像样本数据库。 这些将用于定义分类器的参数。 您还需要选择将用于分类的颜色表示。 对于肤色检测，许多研究表明，来自不同种族群体的肤色在色调/饱和空间中很好地聚集。 因此，我们将简单地使用色调和饱和度值来识别下图中的肤色：
+
+<div id="CH3-image9">
+    <div align="center">
+		<img src=".\CH3-image9.jpg" >
+    </div>
+</div>
+
+We have defined a function that classifies the pixels of an image as skin or non-skin simply based on an interval of values (the minimum and maximum hue, and the minimum and maximum saturation): 
+
+我们已经定义了一个函数，它根据值的间隔（最小和最大色调，以及最小和最大饱和度）将图像的像素分类为皮肤或非皮肤：
+
+```c++
+void detectHScolor(const cv::Mat& image, // input image
+                   double minHue, double maxHue, // Hue interval
+                   double minSat, double maxSat, // saturation interval
+                   cv::Mat& mask) { // output mask
+    // convert into HSV space
+    cv::Mat hsv;
+    cv::cvtColor(image, hsv, CV_BGR2HSV);
+    // split the 3 channels into 3 images
+    std::vector<cv::Mat> channels;
+    cv::split(hsv, channels);
+    // channels[0] is the Hue
+    // channels[1] is the Saturation
+    // channels[2] is the Value
+    // Hue masking
+    cv::Mat mask1; // below maxHue
+    cv::threshold(channels[0], mask1, maxHue, 255,
+    cv::THRESH_BINARY_INV);
+    cv::Mat mask2; // over minHue
+    cv::threshold(channels[0], mask2, minHue, 255, cv::THRESH_BINARY);
+    cv::Mat hueMask; // hue mask
+    if (minHue < maxHue)
+    hueMask = mask1 & mask2;
+    else // if interval crosses the zero-degree axis
+    hueMask = mask1 | mask2;
+    // Saturation masking
+    // between minSat and maxSat
+    cv::Mat satMask; // saturation mask
+    cv::inRange(channels[1], minSat, maxSat, satMask);
+    // combined mask
+    mask = hueMask & satMask;
+}
+```
+
